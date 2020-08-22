@@ -1,0 +1,7 @@
+{
+  "name": "Happy Hour",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
