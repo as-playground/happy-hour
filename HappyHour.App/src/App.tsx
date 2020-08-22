@@ -39,7 +39,7 @@ const App: React.FC = () => (
         <IonRouterOutlet>
           <Route path="/track-drinks" component={TrackDrinksPage} exact={true} />
           <Route path="/receipt" component={ReceiptPage} exact={true} />
-          <Route path="/" render={() => <Redirect to="/tab1" />} exact={true} />
+          <Route path="/" render={() => <Redirect to="/track-drinks" />} exact={true} />
         </IonRouterOutlet>
 
         <IonTabBar slot="bottom">
