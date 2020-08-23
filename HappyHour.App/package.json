@@ -4,7 +4,7 @@
     "private": true,
     "husky": {
         "hooks": {
-            "pre-commit": "pretty-quick --staged"
+            "pre-commit": "pretty-quick --staged && lynt"
         }
     },
     "dependencies": {
@@ -31,7 +31,8 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test"
+        "test": "react-scripts test",
+        "lynt": "lynt src/**/*.{js,jsx,ts,tsx}"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -51,6 +52,7 @@
     "devDependencies": {
         "@capacitor/cli": "2.4.0",
         "husky": "^4.2.5",
+        "lynt": "^0.5.5",
         "prettier": "2.0.5",
         "pretty-quick": "^3.0.0"
     },

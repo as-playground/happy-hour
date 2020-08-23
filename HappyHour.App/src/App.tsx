@@ -32,29 +32,33 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-const App: React.FC = () => (
-    <IonApp>
-        <IonReactRouter>
-            <IonTabs>
-                <IonRouterOutlet>
-                    <Route path="/track-drinks" component={TrackDrinksPage} exact={true} />
-                    <Route path="/receipt" component={ReceiptPage} exact={true} />
-                    <Route path="/" render={() => <Redirect to="/track-drinks" />} exact={true} />
-                </IonRouterOutlet>
+const App: React.FC = () => {
+    const renderDefault = () => <Redirect to="/track-drinks" />;
 
-                <IonTabBar slot="bottom">
-                    <IonTabButton tab="track-drinks" href="/track-drinks">
-                        <IonIcon icon={beerOutline} />
-                        <IonLabel>Track Drinks</IonLabel>
-                    </IonTabButton>
-                    <IonTabButton tab="receipt" href="/receipt">
-                        <IonIcon icon={receiptOutline} />
-                        <IonLabel>Receipt</IonLabel>
-                    </IonTabButton>
-                </IonTabBar>
-            </IonTabs>
-        </IonReactRouter>
-    </IonApp>
-);
+    return (
+        <IonApp>
+            <IonReactRouter>
+                <IonTabs>
+                    <IonRouterOutlet>
+                        <Route path="/track-drinks" component={TrackDrinksPage} exact={true} />
+                        <Route path="/receipt" component={ReceiptPage} exact={true} />
+                        <Route path="/" render={renderDefault} exact={true} />
+                    </IonRouterOutlet>
+
+                    <IonTabBar slot="bottom">
+                        <IonTabButton tab="track-drinks" href="/track-drinks">
+                            <IonIcon icon={beerOutline} />
+                            <IonLabel>Track Drinks</IonLabel>
+                        </IonTabButton>
+                        <IonTabButton tab="receipt" href="/receipt">
+                            <IonIcon icon={receiptOutline} />
+                            <IonLabel>Receipt</IonLabel>
+                        </IonTabButton>
+                    </IonTabBar>
+                </IonTabs>
+            </IonReactRouter>
+        </IonApp>
+    );
+};
 
 export default App;
