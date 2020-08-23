@@ -3,7 +3,10 @@
 
 name: Build & Test
 
-on: [pull_request]
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
 
 jobs:
   build-app:
