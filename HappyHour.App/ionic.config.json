@@ -1,7 +1,7 @@
 {
-  "name": "Happy Hour",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react"
+    "name": "Happy Hour",
+    "integrations": {
+        "capacitor": {}
+    },
+    "type": "react"
 }
