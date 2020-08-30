@@ -1,5 +1,8 @@
 {
   "typescript": true,
   "react": true,
-  "ignore": ["build/**/*.*"]
+  "ignore": ["build/**/*.*"],
+  "rules": {
+    "jsx-no-multiline-js": "off"
+  }
 }
