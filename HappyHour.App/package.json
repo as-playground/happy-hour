@@ -35,7 +35,8 @@
         "typescript": "3.8.3"
     },
     "scripts": {
-        "generate:styles": "npx tailwindcss build src/theme/tailwind.css -o src/theme/main.css --production",
+        "generate:styles": "npx tailwindcss build src/theme/tailwind.css -o src/theme/main.css",
+        "generate:styles:production": "npm run generate:styles --production",
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
