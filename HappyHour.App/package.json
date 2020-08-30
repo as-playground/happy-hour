@@ -20,6 +20,7 @@
         "@types/react-dom": "^16.9.4",
         "@types/react-router": "^5.1.4",
         "@types/react-router-dom": "^5.1.3",
+        "dayjs": "^1.8.34",
         "ionicons": "^5.0.0",
         "react": "^16.13.0",
         "react-dom": "^16.13.0",
@@ -29,6 +30,7 @@
         "typescript": "3.8.3"
     },
     "scripts": {
+        "generate:styles": "npx tailwindcss build src/theme/tailwind.css -o src/theme/main.css --production",
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
@@ -54,7 +56,8 @@
         "husky": "^4.2.5",
         "lynt": "^0.5.5",
         "prettier": "2.0.5",
-        "pretty-quick": "^3.0.0"
+        "pretty-quick": "^3.0.0",
+        "tailwindcss": "^1.7.6"
     },
     "description": "An Ionic project"
 }
