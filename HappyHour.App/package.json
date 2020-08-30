@@ -4,8 +4,13 @@
     "private": true,
     "husky": {
         "hooks": {
-            "pre-commit": "pretty-quick --staged && lynt"
+            "pre-commit": "lint-staged"
         }
+    },
+    "lint-staged": {
+        "*.{js,ts,jsx,tsx,css}": [
+            "pretty-quick --staged && lynt"
+        ]
     },
     "dependencies": {
         "@capacitor/core": "2.4.0",
@@ -54,6 +59,7 @@
     "devDependencies": {
         "@capacitor/cli": "2.4.0",
         "husky": "^4.2.5",
+        "lint-staged": "^10.2.13",
         "lynt": "^0.5.5",
         "prettier": "2.0.5",
         "pretty-quick": "^3.0.0",
