@@ -1,29 +1,26 @@
 import { IonList, IonListHeader } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import { Bar, Discount } from '../model';
-import { isDiscountActive } from '../util';
+import { findActiveDiscounts, remainingSecondsInMinute } from '../util';
 import { BarMenuDrinkItem } from './BarMenuDrinkItem';
 
 interface BarMenuProps {
     bar: Bar;
 }
 
-const findActiveDiscounts = (discounts: Discount[]) =>
-    discounts.filter((discount) => isDiscountActive(discount, new Date()));
+const INTERVAL_DURATION = 60;
 
 export const BarMenu: React.FC<BarMenuProps> = ({ bar }) => {
-    const INTERVAL_DURATION = 60 * 1000;
-
     const [activeDiscounts, setActiveDiscounts] = useState<Discount[]>(findActiveDiscounts(bar.offeredDiscounts));
 
     useEffect(() => {
-        const interval = setInterval(
-            () => setActiveDiscounts(findActiveDiscounts(bar.offeredDiscounts)),
-            INTERVAL_DURATION
+        const timeout = setTimeout(
+            () => setInterval(() => setActiveDiscounts(findActiveDiscounts(bar.offeredDiscounts)), INTERVAL_DURATION),
+            remainingSecondsInMinute() * 1000
         );
 
-        return () => clearInterval(interval);
-    });
+        return () => clearTimeout(timeout);
+    }, [bar]);
 
     return (
         <IonList>
