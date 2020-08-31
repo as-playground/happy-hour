@@ -1,11 +1,7 @@
-import dayjs from 'dayjs';
-import isBetween from 'dayjs/plugin/isBetween';
-import utc from 'dayjs/plugin/utc';
 import { Discount } from '../model/discount';
+import { dayjs, now } from './date-util';
 
-dayjs.extend(isBetween, utc);
-
-export const isDiscountActive = (discount: Discount, currentTime: Date): boolean => {
+const isDiscountActive = (discount: Discount, currentTime: Date): boolean => {
     const currentWeekDay = currentTime.getDay();
     const possibleDiscountTime = discount.validDiscountTimes[currentWeekDay];
 
@@ -13,22 +9,19 @@ export const isDiscountActive = (discount: Discount, currentTime: Date): boolean
         return false;
     }
 
-    const currentTimeDayJs = dayjs
-        .utc()
+    const currentTimeDayJs = dayjs()
         .hour(currentTime.getHours())
         .minute(currentTime.getMinutes())
         .second(0)
         .millisecond(0);
 
-    const discountTimeToDayJs = dayjs
-        .utc()
+    const discountTimeToDayJs = dayjs()
         .hour(possibleDiscountTime.to.getHours())
         .minute(possibleDiscountTime.to.getMinutes())
         .second(0)
         .millisecond(0);
 
-    const discountTimeFromDayJs = dayjs
-        .utc()
+    const discountTimeFromDayJs = dayjs()
         .hour(possibleDiscountTime.from.getHours())
         .minute(possibleDiscountTime.from.getMinutes())
         .second(0)
@@ -37,6 +30,6 @@ export const isDiscountActive = (discount: Discount, currentTime: Date): boolean
     return currentTimeDayJs.isBetween(discountTimeFromDayJs, discountTimeToDayJs, 'minute', '[');
 };
 
-export const findActiveDiscounts = (discounts: Discount[], currentTime: Date): Discount[] => {
+export const findActiveDiscounts = (discounts: Discount[], currentTime: Date = now()): Discount[] => {
     return discounts.filter((discount) => isDiscountActive(discount, currentTime));
 };

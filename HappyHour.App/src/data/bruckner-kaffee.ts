@@ -1,8 +1,5 @@
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
+import { dayjs } from '../util';
 import { Bar, Drink, WeekDay } from './../model';
-
-dayjs.extend(utc);
 
 const happyHourDrinks: Drink[] = [
     {
@@ -28,8 +25,20 @@ const bar: Bar = {
     offeredDrinks: [
         ...happyHourDrinks,
         {
+            name: 'Soda Zitron 0.25L',
+            price: 2.3,
+        },
+        {
             name: 'Soda Zitron 0.5L',
-            price: 2.8,
+            price: 3.9,
+        },
+        {
+            name: 'Coca Cola / Coca Cola Zero 0.33L',
+            price: 3.6,
+        },
+        {
+            name: 'Freistädter Ratsherrn 0.5L',
+            price: 3.9,
         },
     ],
     offeredDiscounts: [
@@ -39,20 +48,20 @@ const bar: Bar = {
             validDrinks: happyHourDrinks,
             validDiscountTimes: {
                 [WeekDay.Monday]: {
-                    from: dayjs.utc().hour(18).minute(0).toDate(),
-                    to: dayjs.utc().hour(20).minute(0).toDate(),
+                    from: dayjs().hour(16).minute(0).toDate(),
+                    to: dayjs().hour(18).minute(0).toDate(),
                 },
                 [WeekDay.Tuesday]: {
-                    from: dayjs.utc().hour(18).minute(0).toDate(),
-                    to: dayjs.utc().hour(20).minute(0).toDate(),
+                    from: dayjs().hour(16).minute(0).toDate(),
+                    to: dayjs().hour(18).minute(0).toDate(),
                 },
                 [WeekDay.Wednesday]: {
-                    from: dayjs.utc().hour(18).minute(0).toDate(),
-                    to: dayjs.utc().hour(20).minute(0).toDate(),
+                    from: dayjs().hour(16).minute(0).toDate(),
+                    to: dayjs().hour(18).minute(0).toDate(),
                 },
                 [WeekDay.Thursday]: {
-                    from: dayjs.utc().hour(18).minute(0).toDate(),
-                    to: dayjs.utc().hour(20).minute(0).toDate(),
+                    from: dayjs().hour(16).minute(0).toDate(),
+                    to: dayjs().hour(18).minute(0).toDate(),
                 },
             },
         },

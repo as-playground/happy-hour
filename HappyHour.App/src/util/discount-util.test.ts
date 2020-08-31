@@ -1,9 +1,6 @@
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
 import { Discount, WeekDay } from '../model';
+import { dayjs } from './date-util';
 import { isDiscountActive } from './discount-util';
-
-dayjs.extend(utc);
 
 it('discount is active at exact start', () => {
     const discount: Discount = {
@@ -17,13 +14,13 @@ it('discount is active at exact start', () => {
         ],
         validDiscountTimes: {
             [WeekDay.Monday]: {
-                from: dayjs.utc().hour(18).minute(0).second(0).millisecond(0).toDate(),
-                to: dayjs.utc().hour(20).minute(0).second(0).millisecond(0).toDate(),
+                from: dayjs().hour(18).minute(0).second(0).millisecond(0).toDate(),
+                to: dayjs().hour(20).minute(0).second(0).millisecond(0).toDate(),
             },
         },
     };
 
-    const currentTime = dayjs.utc().day(WeekDay.Monday).hour(18).minute(0).second(0).millisecond(0).toDate();
+    const currentTime = dayjs().day(WeekDay.Monday).hour(18).minute(0).second(0).millisecond(0).toDate();
 
     expect(isDiscountActive(discount, currentTime)).toBeTruthy();
 });
@@ -40,13 +37,13 @@ it('discount is active at exact end', () => {
         ],
         validDiscountTimes: {
             [WeekDay.Monday]: {
-                from: dayjs.utc().hour(18).minute(0).toDate(),
-                to: dayjs.utc().hour(20).minute(0).toDate(),
+                from: dayjs().hour(18).minute(0).toDate(),
+                to: dayjs().hour(20).minute(0).toDate(),
             },
         },
     };
 
-    const currentTime = dayjs.utc().day(WeekDay.Monday).hour(20).minute(0).second(0).millisecond(0).toDate();
+    const currentTime = dayjs().day(WeekDay.Monday).hour(20).minute(0).second(0).millisecond(0).toDate();
 
     expect(isDiscountActive(discount, currentTime)).toBeTruthy();
 });
@@ -63,13 +60,13 @@ it('discount is not yet active', () => {
         ],
         validDiscountTimes: {
             [WeekDay.Monday]: {
-                from: dayjs.utc().hour(18).minute(0).second(0).millisecond(0).toDate(),
-                to: dayjs.utc().hour(20).minute(0).second(0).millisecond(0).toDate(),
+                from: dayjs().hour(18).minute(0).second(0).millisecond(0).toDate(),
+                to: dayjs().hour(20).minute(0).second(0).millisecond(0).toDate(),
             },
         },
     };
 
-    const currentTime = dayjs.utc().day(WeekDay.Monday).hour(17).minute(59).second(0).millisecond(0).toDate();
+    const currentTime = dayjs().day(WeekDay.Monday).hour(17).minute(59).second(0).millisecond(0).toDate();
 
     expect(isDiscountActive(discount, currentTime)).toBeFalsy();
 });
@@ -86,13 +83,13 @@ it('discount is no longer active', () => {
         ],
         validDiscountTimes: {
             [WeekDay.Monday]: {
-                from: dayjs.utc().hour(18).minute(0).second(0).millisecond(0).toDate(),
-                to: dayjs.utc().hour(20).minute(0).second(0).millisecond(0).toDate(),
+                from: dayjs().hour(18).minute(0).second(0).millisecond(0).toDate(),
+                to: dayjs().hour(20).minute(0).second(0).millisecond(0).toDate(),
             },
         },
     };
 
-    const currentTime = dayjs.utc().day(WeekDay.Monday).hour(20).minute(1).second(0).millisecond(0).toDate();
+    const currentTime = dayjs().day(WeekDay.Monday).hour(20).minute(1).second(0).millisecond(0).toDate();
 
     expect(isDiscountActive(discount, currentTime)).toBeFalsy();
 });
