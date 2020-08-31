@@ -3,7 +3,7 @@
 
 name: Build
 
-on: [push, pull_request]
+on: push
 
 jobs:
   build-app:
@@ -17,6 +17,11 @@ jobs:
         node-version: [10.x, 12.x, 14.x]
 
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.5.0
+        with:
+          access_token: ${{ github.token }}
+          
       - name: Checkout
         uses: actions/checkout@v2
 
