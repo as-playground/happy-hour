@@ -3,15 +3,15 @@ import { Bar, Drink, WeekDay } from './../model';
 
 const happyHourDrinks: Drink[] = [
     {
+        name: 'Aperol Spritzer',
+        price: 5.8,
+    },
+    {
         name: 'Schilcher-Spritzer',
         price: 5.8,
     },
     {
         name: 'Hugo',
-        price: 5.8,
-    },
-    {
-        name: 'Aperol Spritzer',
         price: 5.8,
     },
     {
