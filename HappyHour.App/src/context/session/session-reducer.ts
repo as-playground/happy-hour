@@ -1,9 +1,10 @@
 import { Reducer } from 'react';
-import { Session } from '../../model';
-import { CreateSessionAction, SessionAction } from './session-actions';
+import { Order, Session } from '../../model';
+import { now } from '../../util';
+import { AddDrinkAction, CreateSessionAction, SessionAction } from './session-actions';
 
 export interface SessionState {
-    currentSession?: Session;
+    currentSession: Session;
 }
 
 const createSession = (state: SessionState, action: CreateSessionAction): SessionState => {
@@ -16,6 +17,23 @@ const createSession = (state: SessionState, action: CreateSessionAction): Sessio
     };
 };
 
+const addDrink = (state: SessionState, action: AddDrinkAction): SessionState => {
+    const order: Order = {
+        id: state.currentSession.orders.length + 1,
+        timestamp: now(),
+        drink: action.drink,
+        discounts: action.discounts,
+    };
+
+    return {
+        ...state,
+        currentSession: {
+            ...state.currentSession,
+            orders: [...state.currentSession.orders, order],
+        },
+    };
+};
+
 export const SessionReducer: Reducer<SessionState, SessionAction> = (
     state: SessionState,
     action: SessionAction
@@ -24,7 +42,7 @@ export const SessionReducer: Reducer<SessionState, SessionAction> = (
         case 'createSessionAction':
             return createSession(state, action);
 
-        default:
-            throw new Error(`Unhandled action type: ${action.type}`);
+        case 'addDrinkAction':
+            return addDrink(state, action);
     }
 };

@@ -18,7 +18,7 @@ export const SessionPage: React.FC = () => {
             </IonHeader>
             <IonContent fullscreen>
                 {haveDrinksBeenOrdered() ? (
-                    <OrderedDrinkList orders={state.currentSession?.orders ?? []} />
+                    <OrderedDrinkList orders={state.currentSession.orders} />
                 ) : (
                     <NoOrderedDrinks />
                 )}
