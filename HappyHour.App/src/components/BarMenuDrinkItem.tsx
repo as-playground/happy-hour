@@ -33,18 +33,10 @@ export const BarMenuDrinkItem: React.FC<BarMenuDrinkItemProps> = ({ drink, activ
         slidingItem.current?.close();
     };
 
-    const onSlidingItemDragged = async () => {
-        const slidingRatio = Math.abs((await slidingItem.current?.getSlidingRatio()) ?? 0);
-
-        if (slidingRatio >= 1) {
-            slidingItem.current?.close();
-        }
-    };
-
     return (
         <IonItemSliding ref={slidingItem}>
             <IonItemOptions slot="start" onIonSwipe={addDrink}>
-                <IonItemOption color="success" onClick={addDrink} onDrag={onSlidingItemDragged}>
+                <IonItemOption color="success" onClick={addDrink}>
                     <IonIcon slot="icon-only" icon={addIcon}></IonIcon>
                 </IonItemOption>
             </IonItemOptions>
@@ -58,13 +50,11 @@ export const BarMenuDrinkItem: React.FC<BarMenuDrinkItemProps> = ({ drink, activ
                             <IonLabel>€ {drink.price.toFixed(2)}</IonLabel>
                         </IonCol>
                     </IonRow>
-                    {discounts.length > 0 && (
-                        <IonRow>
-                            <IonCol>
-                                <BarMenuItemDiscounts discounts={discounts} />
-                            </IonCol>
-                        </IonRow>
-                    )}
+                    <IonRow hidden={discounts.length === 0}>
+                        <IonCol>
+                            <BarMenuItemDiscounts discounts={discounts} />
+                        </IonCol>
+                    </IonRow>
                 </IonGrid>
                 <IonRippleEffect></IonRippleEffect>
             </IonItem>
