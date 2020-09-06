@@ -14,7 +14,7 @@ import { add as addIcon } from 'ionicons/icons';
 import React, { useMemo, useRef } from 'react';
 import { useToast } from '../context/toast';
 import { Discount, Drink } from '../model';
-import { BarMenuItemDiscounts } from './BarMenuItemDiscounts';
+import { DiscountList } from './DiscountList';
 
 interface BarMenuDrinkItemProps {
     drink: Drink;
@@ -37,8 +37,8 @@ export const BarMenuDrinkItem: React.FC<BarMenuDrinkItemProps> = ({ drink, activ
         closeSlidingItem();
         showToast({
             message: `Added '${drink.name}' to the session!`,
-            duration: 400,
-            position: 'top',
+            duration: 350,
+            position: 'bottom',
         });
     };
 
@@ -50,7 +50,7 @@ export const BarMenuDrinkItem: React.FC<BarMenuDrinkItemProps> = ({ drink, activ
                 </IonItemOption>
             </IonItemOptions>
             <IonItem className="ion-activatable" onClick={addDrink}>
-                <IonGrid className="p-5">
+                <IonGrid className="p-2">
                     <IonRow className="ion-justify-content-start">
                         <IonCol size="8">
                             <IonLabel className="ion-text-uppercase ion-text-wrap">{drink.name}</IonLabel>
@@ -59,10 +59,8 @@ export const BarMenuDrinkItem: React.FC<BarMenuDrinkItemProps> = ({ drink, activ
                             <IonLabel className="ion-text-wrap">€ {drink.price.toFixed(2)}</IonLabel>
                         </IonCol>
                     </IonRow>
-                    <IonRow hidden={discounts.length === 0}>
-                        <IonCol>
-                            <BarMenuItemDiscounts discounts={discounts} />
-                        </IonCol>
+                    <IonRow>
+                        <DiscountList discounts={discounts} />
                     </IonRow>
                 </IonGrid>
                 <IonRippleEffect></IonRippleEffect>
