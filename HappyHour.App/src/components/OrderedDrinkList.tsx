@@ -1,6 +1,7 @@
 import { IonList, IonListHeader } from '@ionic/react';
 import React from 'react';
 import { Order } from '../model';
+import { NoOrderedDrinks } from './NoOrderedDrinks';
 import { OrderedDrink } from './OrderedDrink';
 
 interface OrderedDrinkListProps {
@@ -8,6 +9,10 @@ interface OrderedDrinkListProps {
 }
 
 export const OrderedDrinkList: React.FC<OrderedDrinkListProps> = ({ orders }) => {
+    if (orders.length === 0) {
+        return <NoOrderedDrinks />;
+    }
+
     return (
         <IonList className="h-full">
             <IonListHeader>Ordered Drinks</IonListHeader>
