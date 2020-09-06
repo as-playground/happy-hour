@@ -52,11 +52,11 @@ export const BarMenuDrinkItem: React.FC<BarMenuDrinkItemProps> = ({ drink, activ
             <IonItem className="ion-activatable" onClick={addDrink}>
                 <IonGrid className="p-5">
                     <IonRow className="ion-justify-content-start">
-                        <IonCol>
-                            <IonLabel>{drink.name}</IonLabel>
+                        <IonCol size="8">
+                            <IonLabel className="ion-text-uppercase ion-text-wrap">{drink.name}</IonLabel>
                         </IonCol>
-                        <IonCol className="ion-text-end">
-                            <IonLabel>€ {drink.price.toFixed(2)}</IonLabel>
+                        <IonCol className="flex justify-end items-center">
+                            <IonLabel className="ion-text-wrap">€ {drink.price.toFixed(2)}</IonLabel>
                         </IonCol>
                     </IonRow>
                     <IonRow hidden={discounts.length === 0}>
