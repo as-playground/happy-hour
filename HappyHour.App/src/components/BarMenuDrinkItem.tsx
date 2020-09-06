@@ -12,6 +12,7 @@ import {
 } from '@ionic/react';
 import { add as addIcon } from 'ionicons/icons';
 import React, { useMemo, useRef } from 'react';
+import { useToast } from '../context/toast';
 import { Discount, Drink } from '../model';
 import { BarMenuItemDiscounts } from './BarMenuItemDiscounts';
 
@@ -25,12 +26,20 @@ const findDiscountsForDrink = (drink: Drink, discounts: Discount[]) =>
     discounts.filter((discount) => discount.validDrinks.some((validDrink) => validDrink.name === drink.name));
 
 export const BarMenuDrinkItem: React.FC<BarMenuDrinkItemProps> = ({ drink, activeDiscounts, addDrink: add }) => {
+    const { showToast } = useToast();
     const discounts = useMemo(() => findDiscountsForDrink(drink, activeDiscounts), [drink, activeDiscounts]);
     const slidingItem = useRef<HTMLIonItemSlidingElement>(null);
 
+    const closeSlidingItem = () => slidingItem.current?.close();
+
     const addDrink = () => {
         add(drink);
-        slidingItem.current?.close();
+        closeSlidingItem();
+        showToast({
+            message: `Added '${drink.name}' to the session!`,
+            duration: 400,
+            position: 'top',
+        });
     };
 
     return (

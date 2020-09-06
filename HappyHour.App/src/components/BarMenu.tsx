@@ -1,8 +1,9 @@
-import { IonList, IonListHeader, IonToast } from '@ionic/react';
+import { IonList, IonListHeader } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import { useSessionDispatch } from '../context/session';
+import { ToastProvider } from '../context/toast';
 import { Bar, Discount, Drink } from '../model';
-import { findActiveDiscounts, remainingSecondsInMinute } from '../util';
+import { findActiveDiscounts, remainingSecondsInMinutes } from '../util';
 import { BarMenuDrinkItem } from './BarMenuDrinkItem';
 
 interface BarMenuProps {
@@ -13,15 +14,13 @@ const INTERVAL_DURATION = 60;
 
 export const BarMenu: React.FC<BarMenuProps> = ({ bar }) => {
     const [activeDiscounts, setActiveDiscounts] = useState<Discount[]>(findActiveDiscounts(bar.offeredDiscounts));
-    const [toastMessage, setToastMessage] = useState<string>('');
-    const [isToastVisible, setToastVisible] = useState(false);
 
     const dispatch = useSessionDispatch();
 
     useEffect(() => {
         const timeout = setTimeout(
             () => setInterval(() => setActiveDiscounts(findActiveDiscounts(bar.offeredDiscounts)), INTERVAL_DURATION),
-            remainingSecondsInMinute() * 1000
+            remainingSecondsInMinutes() * 1000
         );
 
         return () => clearTimeout(timeout);
@@ -29,16 +28,10 @@ export const BarMenu: React.FC<BarMenuProps> = ({ bar }) => {
 
     const addDrink = (drink: Drink) => {
         dispatch({ type: 'addDrinkAction', drink, discounts: activeDiscounts });
-        showToast(`Added '${drink.name}' to the session!`);
-    };
-
-    const showToast = (message: string) => {
-        setToastMessage(message);
-        setToastVisible(true);
     };
 
     return (
-        <>
+        <ToastProvider>
             <IonList color="primary">
                 <IonListHeader>Offered Drinks</IonListHeader>
                 {bar.offeredDrinks.map((drink) => (
@@ -50,12 +43,6 @@ export const BarMenu: React.FC<BarMenuProps> = ({ bar }) => {
                     />
                 ))}
             </IonList>
-            <IonToast
-                isOpen={isToastVisible}
-                onDidDismiss={() => setToastVisible(false)}
-                message={toastMessage}
-                duration={500}
-            />
-        </>
+        </ToastProvider>
     );
 };

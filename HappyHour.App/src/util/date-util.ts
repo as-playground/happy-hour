@@ -9,4 +9,4 @@ export const dayjs = (): DayJs.Dayjs => DayJs.utc();
 
 export const now = (): Date => dayjs().toDate();
 
-export const remainingSecondsInMinute = () => 60 - now().getSeconds();
+export const remainingSecondsInMinutes = () => 60 - now().getSeconds();
