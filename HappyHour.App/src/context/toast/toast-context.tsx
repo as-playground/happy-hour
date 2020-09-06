@@ -42,11 +42,7 @@ export const ToastProvider: React.FC = ({ children }) => {
     return (
         <ToastContext.Provider value={{ showToast }}>
             {children}
-            <IonToast
-                isOpen={isOpen}
-                message={options.message}
-                duration={options.duration}
-                onDidDismiss={onToastDismissed}></IonToast>
+            <IonToast {...options} isOpen={isOpen} onDidDismiss={onToastDismissed}></IonToast>
         </ToastContext.Provider>
     );
 };
