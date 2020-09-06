@@ -44,7 +44,7 @@ const bar: Bar = {
     offeredDiscounts: [
         {
             name: 'Happy Hour',
-            amount: 50.0,
+            amount: 0.5,
             validDrinks: happyHourDrinks,
             validDiscountTimes: {
                 [WeekDay.Monday]: {

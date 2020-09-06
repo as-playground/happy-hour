@@ -14,7 +14,7 @@ import { add as addIcon } from 'ionicons/icons';
 import React, { useMemo, useRef } from 'react';
 import { useToast } from '../context/toast';
 import { Discount, Drink } from '../model';
-import { BarMenuItemDiscounts } from './BarMenuItemDiscounts';
+import { DiscountList } from './DiscountList';
 
 interface BarMenuDrinkItemProps {
     drink: Drink;
@@ -59,10 +59,8 @@ export const BarMenuDrinkItem: React.FC<BarMenuDrinkItemProps> = ({ drink, activ
                             <IonLabel className="ion-text-wrap">€ {drink.price.toFixed(2)}</IonLabel>
                         </IonCol>
                     </IonRow>
-                    <IonRow hidden={discounts.length === 0}>
-                        <IonCol>
-                            <BarMenuItemDiscounts discounts={discounts} />
-                        </IonCol>
+                    <IonRow>
+                        <DiscountList discounts={discounts} />
                     </IonRow>
                 </IonGrid>
                 <IonRippleEffect></IonRippleEffect>
