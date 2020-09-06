@@ -1,6 +1,7 @@
 import { IonGrid, IonItem, IonLabel, IonRow } from '@ionic/react';
 import React from 'react';
 import { Order } from '../model';
+import { local } from '../util/date-util';
 
 interface OrderedDrinkProps {
     order: Order;
@@ -14,7 +15,7 @@ export const OrderedDrink: React.FC<OrderedDrinkProps> = ({ order }) => {
                     <IonLabel>{order.drink.name}</IonLabel>
                 </IonRow>
                 <IonRow>
-                    <IonLabel>{order.timestamp.toString()}</IonLabel>
+                    <IonLabel>{local(order.timestamp).format('L LT')}</IonLabel>
                 </IonRow>
             </IonGrid>
         </IonItem>
