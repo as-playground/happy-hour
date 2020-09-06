@@ -1,4 +1,4 @@
-import { dayjs } from '../util';
+import { utc } from '../util';
 import { Bar, Drink, WeekDay } from './../model';
 
 const happyHourDrinks: Drink[] = [
@@ -48,20 +48,20 @@ const bar: Bar = {
             validDrinks: happyHourDrinks,
             validDiscountTimes: {
                 [WeekDay.Monday]: {
-                    from: dayjs().hour(16).minute(0).toDate(),
-                    to: dayjs().hour(18).minute(0).toDate(),
+                    from: utc().hour(16).minute(0).toDate(),
+                    to: utc().hour(18).minute(0).toDate(),
                 },
                 [WeekDay.Tuesday]: {
-                    from: dayjs().hour(16).minute(0).toDate(),
-                    to: dayjs().hour(18).minute(0).toDate(),
+                    from: utc().hour(16).minute(0).toDate(),
+                    to: utc().hour(18).minute(0).toDate(),
                 },
                 [WeekDay.Wednesday]: {
-                    from: dayjs().hour(16).minute(0).toDate(),
-                    to: dayjs().hour(18).minute(0).toDate(),
+                    from: utc().hour(16).minute(0).toDate(),
+                    to: utc().hour(18).minute(0).toDate(),
                 },
                 [WeekDay.Thursday]: {
-                    from: dayjs().hour(16).minute(0).toDate(),
-                    to: dayjs().hour(18).minute(0).toDate(),
+                    from: utc().hour(16).minute(0).toDate(),
+                    to: utc().hour(18).minute(0).toDate(),
                 },
             },
         },

@@ -1,4 +1,5 @@
 import React from 'react';
+import { now } from '../../util';
 import { SessionDispatch } from './session-actions';
 import { SessionReducer, SessionState } from './session-reducer';
 
@@ -28,7 +29,9 @@ export const useSessionDispatch = () => {
 export const useSession = () => [useSessionState(), useSessionDispatch()];
 
 export const SessionProvider: React.FC = ({ children }) => {
-    const [state, dispatch] = React.useReducer(SessionReducer, {});
+    const [state, dispatch] = React.useReducer(SessionReducer, {
+        currentSession: { timestamp: now(), orders: [] },
+    } as SessionState);
 
     return (
         <SessionStateContext.Provider value={state}>
