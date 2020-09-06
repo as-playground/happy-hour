@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSessionDispatch } from '../context/session';
 import { ToastProvider } from '../context/toast';
 import { Bar, Discount, Drink } from '../model';
-import { findActiveDiscounts, remainingSecondsInMinutes } from '../util';
+import { findActiveDiscounts, remainingSecondsInMinutes as remainingSecondsInMinute } from '../util';
 import { BarMenuDrinkItem } from './BarMenuDrinkItem';
 
 interface BarMenuProps {
@@ -19,8 +19,12 @@ export const BarMenu: React.FC<BarMenuProps> = ({ bar }) => {
 
     useEffect(() => {
         const timeout = setTimeout(
-            () => setInterval(() => setActiveDiscounts(findActiveDiscounts(bar.offeredDiscounts)), INTERVAL_DURATION),
-            remainingSecondsInMinutes() * 1000
+            () =>
+                setInterval(
+                    () => setActiveDiscounts(findActiveDiscounts(bar.offeredDiscounts)),
+                    INTERVAL_DURATION * 1000
+                ),
+            remainingSecondsInMinute() * 1000
         );
 
         return () => clearTimeout(timeout);

@@ -37,8 +37,8 @@ export const BarMenuDrinkItem: React.FC<BarMenuDrinkItemProps> = ({ drink, activ
         closeSlidingItem();
         showToast({
             message: `Added '${drink.name}' to the session!`,
-            duration: 400,
-            position: 'top',
+            duration: 350,
+            position: 'bottom',
         });
     };
 
@@ -50,7 +50,7 @@ export const BarMenuDrinkItem: React.FC<BarMenuDrinkItemProps> = ({ drink, activ
                 </IonItemOption>
             </IonItemOptions>
             <IonItem className="ion-activatable" onClick={addDrink}>
-                <IonGrid className="p-5">
+                <IonGrid className="p-2">
                     <IonRow className="ion-justify-content-start">
                         <IonCol size="8">
                             <IonLabel className="ion-text-uppercase ion-text-wrap">{drink.name}</IonLabel>
