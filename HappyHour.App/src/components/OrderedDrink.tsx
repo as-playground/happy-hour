@@ -1,7 +1,6 @@
 import { IonCol, IonGrid, IonItem, IonLabel, IonRow } from '@ionic/react';
 import React from 'react';
-import { Discount, Drink, Order } from '../model';
-import { findActiveDiscounts } from '../util';
+import { Order } from '../model';
 import { local } from '../util/date-util';
 import { DiscountList } from './DiscountList';
 
@@ -9,17 +8,11 @@ interface OrderedDrinkProps {
     order: Order;
 }
 
-const findValidDiscounts = (order: Order) =>
-    findActiveDiscounts(order.discounts, order.timestamp).filter((discount) =>
-        discount.validDrinks.includes(order.drink)
-    );
-
-const calculatePriceToPay = (drink: Drink, validDiscounts: Discount[]) =>
-    validDiscounts.reduce((totalSum, discount) => totalSum * (1 - discount.amount), drink.price);
+const calculatePriceToPay = ({ drink, discounts }: Order) =>
+    discounts.reduce((totalSum, discount) => totalSum * (1 - discount.amount), drink.price);
 
 export const OrderedDrink: React.FC<OrderedDrinkProps> = ({ order }) => {
-    const validDiscounts = findValidDiscounts(order);
-    const priceToPay = calculatePriceToPay(order.drink, validDiscounts);
+    const priceToPay = calculatePriceToPay(order);
 
     return (
         <IonItem>
@@ -34,7 +27,7 @@ export const OrderedDrink: React.FC<OrderedDrinkProps> = ({ order }) => {
                     </IonCol>
                 </IonRow>
                 <IonRow>
-                    <DiscountList discounts={validDiscounts} />
+                    <DiscountList discounts={order.discounts} />
                 </IonRow>
             </IonGrid>
         </IonItem>

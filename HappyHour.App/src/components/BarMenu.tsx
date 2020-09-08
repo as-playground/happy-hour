@@ -1,9 +1,10 @@
 import { IonList, IonListHeader } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
-import { useSessionDispatch } from '../context/session';
 import { ToastProvider } from '../context/toast';
 import { Bar, Discount, Drink } from '../model';
-import { findActiveDiscounts, remainingSecondsInMinutes as remainingSecondsInMinute } from '../util';
+import { useCurrentSession } from '../recoil/session-atom';
+import { remainingSecondsInCurrentMinute } from '../util/date-util';
+import { findActiveDiscounts } from '../util/discount-util';
 import { BarMenuDrinkItem } from './BarMenuDrinkItem';
 
 interface BarMenuProps {
@@ -14,8 +15,7 @@ const INTERVAL_DURATION = 60;
 
 export const BarMenu: React.FC<BarMenuProps> = ({ bar }) => {
     const [activeDiscounts, setActiveDiscounts] = useState<Discount[]>(findActiveDiscounts(bar.offeredDiscounts));
-
-    const dispatch = useSessionDispatch();
+    const { addDrink: addDrinkToSession } = useCurrentSession();
 
     useEffect(() => {
         const timeout = setTimeout(
@@ -24,15 +24,13 @@ export const BarMenu: React.FC<BarMenuProps> = ({ bar }) => {
                     () => setActiveDiscounts(findActiveDiscounts(bar.offeredDiscounts)),
                     INTERVAL_DURATION * 1000
                 ),
-            remainingSecondsInMinute() * 1000
+            remainingSecondsInCurrentMinute() * 1000
         );
 
         return () => clearTimeout(timeout);
     }, [bar]);
 
-    const addDrink = (drink: Drink) => {
-        dispatch({ type: 'addDrinkAction', drink, discounts: activeDiscounts });
-    };
+    const addDrink = (drink: Drink) => addDrinkToSession(drink, activeDiscounts);
 
     return (
         <ToastProvider>

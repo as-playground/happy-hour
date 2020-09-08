@@ -11,4 +11,4 @@ export const utc = (date?: Date): DayJs.Dayjs => DayJs.utc(date);
 export const local = (date?: Date): DayJs.Dayjs => DayJs(date);
 export const now = (): Date => utc().toDate();
 
-export const remainingSecondsInMinutes = () => 60 - now().getSeconds();
+export const remainingSecondsInCurrentMinute = () => 60 - now().getSeconds();
