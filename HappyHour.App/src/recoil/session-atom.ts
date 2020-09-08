@@ -1,19 +1,24 @@
 import { useEffect } from 'react';
 import { atom, useRecoilState } from 'recoil';
-import { getOrCreateCurrentSession, updateSession } from '../data/happyhour-db';
+import {
+    closeSession as closeSessionInDb,
+    createSession as createSessionInDb,
+    getOrCreateCurrentSession as getOrCreateCurrentSessionInDb,
+    updateSession as updateSessionInDb,
+} from '../data/happyhour-db';
 import { Discount, Drink, Order } from '../model';
 import { now } from '../util/date-util';
 
 export const sessionAtom = atom({
     key: 'sessionAtomFamily',
-    default: getOrCreateCurrentSession(),
+    default: getOrCreateCurrentSessionInDb(),
 });
 
 export const useCurrentSession = () => {
     const [session, setSession] = useRecoilState(sessionAtom);
 
     useEffect(() => {
-        updateSession(session);
+        updateSessionInDb(session);
     }, [session]);
 
     const addDrink = (drink: Drink, discounts: Discount[]) => {
@@ -30,5 +35,13 @@ export const useCurrentSession = () => {
         });
     };
 
-    return { session, addDrink };
+    const closeSession = async () => {
+        await closeSessionInDb(session);
+
+        const newSession = await createSessionInDb();
+
+        setSession(newSession);
+    };
+
+    return { session, addDrink, closeSession };
 };

@@ -1,13 +1,14 @@
 import { IonList, IonListHeader } from '@ionic/react';
 import React from 'react';
-import { useRecoilValue } from 'recoil';
-import { sessionAtom } from '../recoil/session-atom';
+import { Order } from '../model';
 import { NoOrderedDrinks } from './NoOrderedDrinks';
 import { OrderedDrink } from './OrderedDrink';
 
-export const OrderedDrinkList: React.FC = () => {
-    const { orders } = useRecoilValue(sessionAtom);
+interface OrderedDrinkListProps {
+    orders: Order[];
+}
 
+export const OrderedDrinkList: React.FC<OrderedDrinkListProps> = ({ orders }) => {
     if (orders.length === 0) {
         return <NoOrderedDrinks />;
     }

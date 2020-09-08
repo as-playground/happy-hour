@@ -50,10 +50,12 @@ export const BarMenuDrinkItem: React.FC<BarMenuDrinkItemProps> = ({ drink, activ
                 </IonItemOption>
             </IonItemOptions>
             <IonItem className="ion-activatable" onClick={addDrink}>
-                <IonGrid className="p-2">
+                <IonGrid className="px-2 py-3">
                     <IonRow className="ion-justify-content-start">
-                        <IonCol size="8">
-                            <IonLabel className="ion-text-uppercase ion-text-wrap">{drink.name}</IonLabel>
+                        <IonCol className="px-0" size="8">
+                            <IonLabel className="font-bold ion-text-uppercase ion-text-wrap" color="warning">
+                                {drink.name}
+                            </IonLabel>
                         </IonCol>
                         <IonCol className="flex justify-end items-center">
                             <IonLabel className="ion-text-wrap">€ {drink.price.toFixed(2)}</IonLabel>
