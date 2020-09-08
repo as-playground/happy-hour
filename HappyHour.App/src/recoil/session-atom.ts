@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { atom, useRecoilState } from 'recoil';
-import { getOrCreateCurrentSession, updateSession } from '../data/indexeddb';
+import { getOrCreateCurrentSession, updateSession } from '../data/happyhour-db';
 import { Discount, Drink, Order } from '../model';
 import { now } from '../util/date-util';
 
