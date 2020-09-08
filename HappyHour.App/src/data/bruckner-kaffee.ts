@@ -1,4 +1,4 @@
-import { utc } from '../util';
+import { utc } from '../util/date-util';
 import { Bar, Drink, WeekDay } from './../model';
 
 const happyHourDrinks: Drink[] = [
