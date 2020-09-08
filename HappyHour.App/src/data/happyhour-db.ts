@@ -42,7 +42,7 @@ const getAllSessions = async () => {
     return await store.getAll();
 };
 
-const createSession = async (session?: Session): Promise<Session> => {
+export const createSession = async (session?: Session): Promise<Session> => {
     const db = await openDB();
     const store = db.transaction('session', 'readwrite').objectStore('session');
 

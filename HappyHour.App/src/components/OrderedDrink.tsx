@@ -8,9 +8,6 @@ interface OrderedDrinkProps {
     order: Order;
 }
 
-const calculatePriceToPay = ({ drink, discounts }: Order) =>
-    discounts.reduce((totalSum, discount) => totalSum * (1 - discount.amount), drink.price);
-
 export const OrderedDrink: React.FC<OrderedDrinkProps> = ({ order }) => {
     const priceToPay = calculatePriceToPay(order);
 
