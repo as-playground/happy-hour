@@ -1,22 +1,24 @@
-import React from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import './TrackDrinksPage.css';
+import React, { useState } from 'react';
+import { BarMenu } from '../../components';
+import bars from '../../data';
+import { Bar } from '../../model';
 
-export const TrackDrinksPage: React.FC = () => {
+const TrackDrinksPage: React.FC = () => {
+    const [currentBar] = useState<Bar>(bars[0]);
+
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Tab 1</IonTitle>
+                    <IonTitle>{currentBar.name}</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent fullscreen>
-                <IonHeader collapse="condense">
-                    <IonToolbar>
-                        <IonTitle size="large">Tab 1</IonTitle>
-                    </IonToolbar>
-                </IonHeader>
+                <BarMenu bar={currentBar} />
             </IonContent>
         </IonPage>
     );
 };
+
+export default TrackDrinksPage;
