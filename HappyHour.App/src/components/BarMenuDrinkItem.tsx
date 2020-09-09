@@ -32,19 +32,19 @@ export const BarMenuDrinkItem: React.FC<BarMenuDrinkItemProps> = ({ drink, activ
 
     const closeSlidingItem = () => slidingItem.current?.close();
 
-    const addDrink = () => {
+    const addDrink = async () => {
         add(drink);
-        closeSlidingItem();
+        await closeSlidingItem();
         showToast({
             message: `Added '${drink.name}' to the session!`,
-            duration: 350,
-            position: 'bottom',
+            duration: 300,
+            position: 'top',
         });
     };
 
     return (
         <IonItemSliding ref={slidingItem}>
-            <IonItemOptions slot="start" onIonSwipe={addDrink}>
+            <IonItemOptions side="start" onIonSwipe={addDrink}>
                 <IonItemOption color="success" onClick={addDrink}>
                     <IonIcon slot="icon-only" icon={addIcon}></IonIcon>
                 </IonItemOption>

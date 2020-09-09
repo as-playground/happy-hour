@@ -18,11 +18,11 @@ import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { LoadingIndicator } from './components';
+import { ToastProvider } from './context/toast';
+import SessionPage from './pages/session/SessionPage';
 import TrackDrinksPage from './pages/track-drinks/TrackDrinksPage';
 import './theme/main.css';
 import './theme/variables.css';
-
-const SessionPage = React.lazy(() => import('./pages/session/SessionPage'));
 
 const App: React.FC = () => {
     const renderDefault = () => <Redirect to="/track-drinks" />;
@@ -30,30 +30,32 @@ const App: React.FC = () => {
     return (
         <RecoilRoot>
             <Suspense fallback={<LoadingIndicator />}>
-                <IonApp>
-                    <IonReactRouter>
-                        <IonTabs>
-                            <IonRouterOutlet>
-                                <Switch>
-                                    <Route path="/track-drinks" component={TrackDrinksPage} exact={true} />
-                                    <Route path="/session" component={SessionPage} exact={true} />
-                                    <Route path="/" render={renderDefault} exact={true} />
-                                </Switch>
-                            </IonRouterOutlet>
+                <ToastProvider>
+                    <IonApp>
+                        <IonReactRouter>
+                            <IonTabs>
+                                <IonRouterOutlet>
+                                    <Switch>
+                                        <Route path="/track-drinks" component={TrackDrinksPage} exact={true} />
+                                        <Route path="/session" component={SessionPage} exact={true} />
+                                        <Route path="/" render={renderDefault} exact={true} />
+                                    </Switch>
+                                </IonRouterOutlet>
 
-                            <IonTabBar slot="bottom">
-                                <IonTabButton tab="track-drinks" href="/track-drinks">
-                                    <IonIcon icon={beerOutline} />
-                                    <IonLabel>Track Drinks</IonLabel>
-                                </IonTabButton>
-                                <IonTabButton tab="session" href="/session">
-                                    <IonIcon icon={receiptOutline} />
-                                    <IonLabel>Session</IonLabel>
-                                </IonTabButton>
-                            </IonTabBar>
-                        </IonTabs>
-                    </IonReactRouter>
-                </IonApp>
+                                <IonTabBar slot="bottom">
+                                    <IonTabButton tab="track-drinks" href="/track-drinks">
+                                        <IonIcon icon={beerOutline} />
+                                        <IonLabel>Track Drinks</IonLabel>
+                                    </IonTabButton>
+                                    <IonTabButton tab="session" href="/session">
+                                        <IonIcon icon={receiptOutline} />
+                                        <IonLabel>Session</IonLabel>
+                                    </IonTabButton>
+                                </IonTabBar>
+                            </IonTabs>
+                        </IonReactRouter>
+                    </IonApp>
+                </ToastProvider>
             </Suspense>
         </RecoilRoot>
     );

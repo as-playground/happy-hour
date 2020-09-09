@@ -1,6 +1,5 @@
 import { IonList, IonListHeader } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
-import { ToastProvider } from '../context/toast';
 import { Bar, Discount, Drink } from '../model';
 import { useCurrentSession } from '../recoil/session-atom';
 import { remainingSecondsInCurrentMinute } from '../util/date-util';
@@ -33,18 +32,16 @@ export const BarMenu: React.FC<BarMenuProps> = ({ bar }) => {
     const addDrink = (drink: Drink) => addDrinkToSession(drink, activeDiscounts);
 
     return (
-        <ToastProvider>
-            <IonList color="primary">
-                <IonListHeader>Offered Drinks</IonListHeader>
-                {bar.offeredDrinks.map((drink) => (
-                    <BarMenuDrinkItem
-                        key={drink.name}
-                        drink={drink}
-                        activeDiscounts={activeDiscounts}
-                        addDrink={addDrink}
-                    />
-                ))}
-            </IonList>
-        </ToastProvider>
+        <IonList color="primary">
+            <IonListHeader>Offered Drinks</IonListHeader>
+            {bar.offeredDrinks.map((drink) => (
+                <BarMenuDrinkItem
+                    key={drink.name}
+                    drink={drink}
+                    activeDiscounts={activeDiscounts}
+                    addDrink={addDrink}
+                />
+            ))}
+        </IonList>
     );
 };

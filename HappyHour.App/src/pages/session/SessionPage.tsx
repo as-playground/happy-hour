@@ -1,17 +1,14 @@
 import {
     IonAlert,
     IonButton,
-    IonButtons,
     IonContent,
     IonFooter,
     IonHeader,
-    IonIcon,
     IonLabel,
     IonPage,
     IonTitle,
     IonToolbar,
 } from '@ionic/react';
-import { walletOutline } from 'ionicons/icons';
 import React, { useState } from 'react';
 import { OrderedDrinkList } from '../../components/OrderedDrinkList';
 import { useCurrentSession } from '../../recoil';
@@ -26,11 +23,6 @@ const SessionPage: React.FC = () => {
             <IonHeader>
                 <IonToolbar>
                     <IonTitle>Current Session</IonTitle>
-                    <IonButtons slot="end">
-                        <IonButton onClick={() => setAlertOpen(true)} disabled={session.orders.length === 0}>
-                            <IonIcon slot="icon-only" icon={walletOutline} color="warning" />
-                        </IonButton>
-                    </IonButtons>
                 </IonToolbar>
             </IonHeader>
             <IonContent>
@@ -47,13 +39,10 @@ const SessionPage: React.FC = () => {
                 />
             </IonContent>
             <IonFooter>
-                <IonToolbar className="px-6 font-bold">
-                    <IonLabel slot="start" className="text-lg">
-                        Total:
-                    </IonLabel>
-                    <IonLabel slot="end" className="text-lg" color="warning">
-                        € {calculateSum(session.orders).toFixed(2)}
-                    </IonLabel>
+                <IonToolbar hidden={session.orders.length === 0} className="px-6 font-bold">
+                    <IonButton color="warning w-full" onClick={() => setAlertOpen(true)}>
+                        <IonLabel className="text-lg">Total: € {calculateSum(session.orders).toFixed(2)}</IonLabel>
+                    </IonButton>
                 </IonToolbar>
             </IonFooter>
         </IonPage>
