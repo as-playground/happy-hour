@@ -28,35 +28,41 @@ const App: React.FC = () => {
     const renderDefault = () => <Redirect to="/track-drinks" />;
 
     return (
-        <RecoilRoot>
-            <Suspense fallback={<LoadingIndicator />}>
-                <ToastProvider>
-                    <IonApp>
-                        <IonReactRouter>
-                            <IonTabs>
-                                <IonRouterOutlet>
-                                    <Switch>
-                                        <Route path="/track-drinks" component={TrackDrinksPage} exact={true} />
-                                        <Route path="/session" component={SessionPage} exact={true} />
-                                        <Route path="/" render={renderDefault} exact={true} />
-                                    </Switch>
-                                </IonRouterOutlet>
+        <HappyHourApp>
+            <IonReactRouter>
+                <IonTabs>
+                    <IonRouterOutlet>
+                        <Switch>
+                            <Route path="/track-drinks" component={TrackDrinksPage} exact={true} />
+                            <Route path="/session" component={SessionPage} exact={true} />
+                            <Route path="/" render={renderDefault} exact={true} />
+                        </Switch>
+                    </IonRouterOutlet>
 
-                                <IonTabBar slot="bottom">
-                                    <IonTabButton tab="track-drinks" href="/track-drinks">
-                                        <IonIcon icon={beerOutline} />
-                                        <IonLabel>Track Drinks</IonLabel>
-                                    </IonTabButton>
-                                    <IonTabButton tab="session" href="/session">
-                                        <IonIcon icon={receiptOutline} />
-                                        <IonLabel>Session</IonLabel>
-                                    </IonTabButton>
-                                </IonTabBar>
-                            </IonTabs>
-                        </IonReactRouter>
-                    </IonApp>
-                </ToastProvider>
-            </Suspense>
+                    <IonTabBar slot="bottom">
+                        <IonTabButton tab="track-drinks" href="/track-drinks">
+                            <IonIcon icon={beerOutline} />
+                            <IonLabel>Track Drinks</IonLabel>
+                        </IonTabButton>
+                        <IonTabButton tab="session" href="/session">
+                            <IonIcon icon={receiptOutline} />
+                            <IonLabel>Session</IonLabel>
+                        </IonTabButton>
+                    </IonTabBar>
+                </IonTabs>
+            </IonReactRouter>
+        </HappyHourApp>
+    );
+};
+
+const HappyHourApp: React.FC = ({ children }) => {
+    return (
+        <RecoilRoot>
+            <ToastProvider>
+                <Suspense fallback={<LoadingIndicator />}>
+                    <IonApp>{children}</IonApp>
+                </Suspense>
+            </ToastProvider>
         </RecoilRoot>
     );
 };
