@@ -1,9 +1,9 @@
 import { IonList, IonListHeader } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import { Bar, Discount, Drink } from '../model';
+import { findActiveDiscounts, findValidDiscounts } from '../model/discount';
 import { useCurrentSession } from '../recoil/session-atom';
 import { remainingSecondsInCurrentMinute } from '../util/date-util';
-import { findActiveDiscounts } from '../util/discount-util';
 import { BarMenuDrinkItem } from './BarMenuDrinkItem';
 
 interface BarMenuProps {
@@ -17,30 +17,28 @@ export const BarMenu: React.FC<BarMenuProps> = ({ bar }) => {
     const { addDrink: addDrinkToSession } = useCurrentSession();
 
     useEffect(() => {
-        const timeout = setTimeout(
-            () =>
-                setInterval(
-                    () => setActiveDiscounts(findActiveDiscounts(bar.offeredDiscounts)),
-                    INTERVAL_DURATION * 1000
-                ),
-            remainingSecondsInCurrentMinute() * 1000
-        );
+        let interval: NodeJS.Timeout;
 
-        return () => clearTimeout(timeout);
+        const timeout = setTimeout(() => {
+            interval = setInterval(
+                () => setActiveDiscounts(findActiveDiscounts(bar.offeredDiscounts)),
+                INTERVAL_DURATION * 1000
+            );
+        }, remainingSecondsInCurrentMinute() * 1000);
+
+        return () => {
+            clearInterval(interval);
+            clearTimeout(timeout);
+        };
     }, [bar]);
 
-    const addDrink = (drink: Drink) => addDrinkToSession(drink, activeDiscounts);
+    const addDrink = (drink: Drink) => addDrinkToSession(drink, findValidDiscounts(drink, activeDiscounts));
 
     return (
-        <IonList color="primary">
+        <IonList>
             <IonListHeader>Offered Drinks</IonListHeader>
             {bar.offeredDrinks.map((drink) => (
-                <BarMenuDrinkItem
-                    key={drink.name}
-                    drink={drink}
-                    activeDiscounts={activeDiscounts}
-                    addDrink={addDrink}
-                />
+                <BarMenuDrinkItem key={drink.name} drink={drink} activeDiscounts={activeDiscounts} onClick={addDrink} />
             ))}
         </IonList>
     );

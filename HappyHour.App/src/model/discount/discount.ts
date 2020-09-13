@@ -1,5 +1,5 @@
-import { DiscountTimeDictionary } from './discount-time-dictionary';
-import { Drink } from './drink';
+import { DiscountTimeDictionary } from '../discount-time-dictionary';
+import { Drink } from '../drink';
 
 export interface Discount {
     name: string;

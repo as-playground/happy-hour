@@ -1,8 +1,8 @@
 import { IonCol, IonGrid, IonItem, IonLabel, IonRow } from '@ionic/react';
 import React from 'react';
 import { Order } from '../model';
+import { calculatePriceToPay } from '../model/order';
 import { local } from '../util/date-util';
-import { calculatePriceToPay } from '../util/order-util';
 import { DiscountList } from './DiscountList';
 
 interface OrderedDrinkProps {
