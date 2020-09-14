@@ -14,7 +14,7 @@ export const OrderedDrinkList: React.FC<OrderedDrinkListProps> = ({ orders }) =>
     }
 
     return (
-        <IonList className="h-full">
+        <IonList>
             <IonListHeader>Ordered Drinks</IonListHeader>
             {orders.map((order) => (
                 <OrderedDrink key={order.id} order={order} />

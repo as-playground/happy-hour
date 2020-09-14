@@ -14,7 +14,7 @@ const TrackDrinksPage: React.FC = () => {
                     <IonTitle>{currentBar.name}</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <IonContent fullscreen>
+            <IonContent>
                 <BarMenu bar={currentBar} />
             </IonContent>
         </IonPage>
