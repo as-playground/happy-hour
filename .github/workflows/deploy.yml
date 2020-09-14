@@ -5,26 +5,24 @@ name: Deploy
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - release/*
 
 jobs:
-  build-app:
+  firebase-deploy:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: HappyHour.App
 
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x]
-
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@master
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@master
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "14.x"
 
       - name: Install dependencies
         run: npm ci
@@ -32,5 +30,9 @@ jobs:
       - name: Production Build
         run: npm run build --if-present
 
-      - name: Deploy
-        run: firebase deploy
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@v1.5.0
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secret.FIREBASE_TOKEN }}
