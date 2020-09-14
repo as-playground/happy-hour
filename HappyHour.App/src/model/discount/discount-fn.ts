@@ -1,7 +1,7 @@
-import { Discount } from '../model/discount';
-import { now, utc } from './date-util';
+import { Discount, Drink } from '..';
+import { now, utc } from '../../util/date-util';
 
-const isDiscountActive = (discount: Discount, currentTime: Date): boolean => {
+export const isDiscountActive = (discount: Discount, currentTime: Date): boolean => {
     const currentWeekDay = currentTime.getDay();
     const possibleDiscountTime = discount.validDiscountTimes[currentWeekDay];
 
@@ -28,4 +28,13 @@ const isDiscountActive = (discount: Discount, currentTime: Date): boolean => {
 
 export const findActiveDiscounts = (discounts: Discount[], currentTime: Date = now()): Discount[] => {
     return discounts.filter((discount) => isDiscountActive(discount, currentTime));
+};
+
+export const findValidDiscounts = (drink: Drink, discounts: Discount[]) => {
+    return discounts.filter((discount) => discount.validDrinks.includes(drink));
+};
+
+export const calculatePriceToPay = (drink: Drink, discounts: Discount[]) => {
+    const validDiscounts = findValidDiscounts(drink, discounts);
+    return validDiscounts.reduce((totalSum, discount) => totalSum * (1 - discount.amount), drink.price);
 };

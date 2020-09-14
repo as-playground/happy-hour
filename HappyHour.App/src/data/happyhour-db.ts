@@ -1,26 +1,41 @@
-import { DBSchema, openDB as openIDB } from 'idb';
+import { DBSchema, IDBPDatabase, openDB as openIDB } from 'idb';
 import { Session } from '../model';
 import { now } from '../util/date-util';
 
 const DB_KEY = 'HappyHourDB';
 const DB_VERSION = 1;
 
-interface HappyHourDB extends DBSchema {
-    session: {
-        key: number;
-        value: Session;
-    };
+interface SessionTable {
+    key: 'session';
+    value: Session;
 }
 
-const openDB = async () => {
-    return await openIDB<HappyHourDB>(DB_KEY, DB_VERSION, {
-        upgrade: (db) => {
-            db.createObjectStore('session', {
-                autoIncrement: true,
-            });
-        },
-    });
+interface HappyHourDB extends DBSchema {
+    session: SessionTable;
+}
+
+const openDBMemoized = () => {
+    const cache: { db?: IDBPDatabase<HappyHourDB> } = {};
+
+    return async () => {
+        if (cache.db) {
+            return cache.db;
+        }
+
+        cache.db = await openIDB<HappyHourDB>(DB_KEY, DB_VERSION, {
+            upgrade: (db) => {
+                db.createObjectStore('session', {
+                    autoIncrement: true,
+                    keyPath: 'id',
+                });
+            },
+        });
+
+        return cache.db;
+    };
 };
+
+const openDB = openDBMemoized();
 
 export const getOrCreateCurrentSession = async (): Promise<Session> => {
     const allSessions = await getAllSessions();
@@ -37,16 +52,15 @@ export const getOrCreateCurrentSession = async (): Promise<Session> => {
 
 const getAllSessions = async () => {
     const db = await openDB();
-    const store = db.transaction('session').objectStore('session');
 
-    return await store.getAll();
+    return await db.getAll('session');
 };
 
 export const createSession = async (session?: Session): Promise<Session> => {
     const db = await openDB();
-    const store = db.transaction('session', 'readwrite').objectStore('session');
 
-    const id = await store.add(
+    const id = await db.add(
+        'session',
         session ?? {
             timestamp: now(),
             orders: [],
@@ -54,30 +68,26 @@ export const createSession = async (session?: Session): Promise<Session> => {
         }
     );
 
-    const newSession = await store.get(id);
+    const newSession = await db.get('session', id);
 
     return newSession!!;
 };
 
 export const updateSession = async (session: Session): Promise<void> => {
-    const db = await openDB();
-    const store = db.transaction('session', 'readwrite').objectStore('session');
-
     if (session.id) {
-        await store.put(session);
+        const db = await openDB();
+        await db.put('session', session);
     }
 };
 
-export const closeSession = async (session: Session): Promise<void> => {
-    await updateSession({ ...session, closed: true });
-};
+export const closeSession = (session: Session): Promise<void> => updateSession({ ...session, closed: true });
 
 export const closeSessions = async (sessions: Session[]): Promise<void> => {
     await Promise.all(sessions.map((session) => closeSession(session)));
 };
 
 const closeStaleSessions = async (openSessions: Session[]): Promise<Session> => {
-    openSessions.sort((a, b) => +(a.timestamp > b.timestamp) - +(a.timestamp < b.timestamp));
+    openSessions.sort((a, b) => +(a.timestamp < b.timestamp) - +(a.timestamp > b.timestamp));
     const staleSessions = openSessions.slice(1);
 
     await closeSessions(staleSessions);

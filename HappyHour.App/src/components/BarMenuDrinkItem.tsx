@@ -11,24 +11,24 @@ import {
     IonRow,
 } from '@ionic/react';
 import { add as addIcon } from 'ionicons/icons';
-import React, { useMemo, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useToast } from '../context/toast';
 import { Discount, Drink } from '../model';
+import { calculatePriceToPay, findValidDiscounts } from '../model/discount';
 import { DiscountList } from './DiscountList';
 
 interface BarMenuDrinkItemProps {
     drink: Drink;
     activeDiscounts: Discount[];
-    addDrink: (drink: Drink) => void;
+    onClick: (drink: Drink) => void;
 }
 
-const findDiscountsForDrink = (drink: Drink, discounts: Discount[]) =>
-    discounts.filter((discount) => discount.validDrinks.some((validDrink) => validDrink.name === drink.name));
-
-export const BarMenuDrinkItem: React.FC<BarMenuDrinkItemProps> = ({ drink, activeDiscounts, addDrink: add }) => {
-    const { showToast } = useToast();
-    const discounts = useMemo(() => findDiscountsForDrink(drink, activeDiscounts), [drink, activeDiscounts]);
+export const BarMenuDrinkItem: React.FC<BarMenuDrinkItemProps> = ({ drink, activeDiscounts, onClick: add }) => {
     const slidingItem = useRef<HTMLIonItemSlidingElement>(null);
+    const { showToast } = useToast();
+
+    const validDiscounts = findValidDiscounts(drink, activeDiscounts);
+    const priceToPay = calculatePriceToPay(drink, validDiscounts);
 
     const closeSlidingItem = () => slidingItem.current?.close();
 
@@ -58,11 +58,11 @@ export const BarMenuDrinkItem: React.FC<BarMenuDrinkItemProps> = ({ drink, activ
                             </IonLabel>
                         </IonCol>
                         <IonCol className="flex justify-end items-center">
-                            <IonLabel className="ion-text-wrap">€ {drink.price.toFixed(2)}</IonLabel>
+                            <IonLabel className="ion-text-wrap">€ {priceToPay.toFixed(2)}</IonLabel>
                         </IonCol>
                     </IonRow>
                     <IonRow>
-                        <DiscountList discounts={discounts} />
+                        <DiscountList discounts={validDiscounts} />
                     </IonRow>
                 </IonGrid>
                 <IonRippleEffect></IonRippleEffect>

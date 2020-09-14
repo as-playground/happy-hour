@@ -11,8 +11,8 @@ import {
 } from '@ionic/react';
 import React, { useState } from 'react';
 import { OrderedDrinkList } from '../../components/OrderedDrinkList';
+import { calculateSum } from '../../model/order';
 import { useCurrentSession } from '../../recoil';
-import { calculateSum } from '../../util/order-util';
 import './SessionPage.css';
 const SessionPage: React.FC = () => {
     const [isAlertOpen, setAlertOpen] = useState(false);

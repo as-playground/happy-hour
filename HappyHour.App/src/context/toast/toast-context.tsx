@@ -19,16 +19,20 @@ export const useToast = () => {
 
 export const ToastProvider: React.FC = ({ children }) => {
     const [isOpen, setOpen] = useState(false);
-    const [options, setOptions] = useState<ToastOptions>({});
+    const [options, setOptions] = useState<ToastOptions>();
     const [queue, setQueue] = useState<ToastOptions[]>([]);
 
     useEffect(() => {
         if (queue.length > 0) {
-            const nextToast = queue[0];
-            setOptions(nextToast);
-            setOpen(true);
+            setOptions(queue[0]);
         }
     }, [queue]);
+
+    useEffect(() => {
+        if (options) {
+            setOpen(true);
+        }
+    }, [options]);
 
     const showToast = (options: ToastOptions) => {
         setQueue([...queue, options]);
