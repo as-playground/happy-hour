@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { atom, useRecoilState } from 'recoil';
+import { useToast } from '../context/toast';
 import {
     closeSession as closeSessionInDb,
     createSession as createSessionInDb,
@@ -17,23 +18,40 @@ export const sessionAtom = atom({
 export const useCurrentSession = () => {
     const [session, setSession] = useRecoilState(sessionAtom);
 
+    const { showToast } = useToast();
+
     useEffect(() => {
-        updateSessionInDb(session);
+        if (session) {
+            updateSessionInDb(session);
+        }
     }, [session]);
 
     const addDrink = (drink: Drink, discounts: Discount[]) => {
-        const order: Order = {
-            id: session.orders.length + 1,
-            timestamp: now(),
-            drink,
-            discounts,
-        };
+        try {
+            const order: Order = {
+                id: session.orders.length + 1,
+                timestamp: now(),
+                drink,
+                discounts,
+            };
 
-        setSession({
-            ...session,
-            orders: [...session.orders, order],
-        });
+            setSession((currentValue) => ({
+                ...currentValue,
+                orders: [...session.orders, order],
+            }));
+        } catch (ex) {
+            showToast({
+                message: ex,
+                duration: 500,
+            });
+        }
     };
+
+    const removeOrder = (order: Order) =>
+        setSession((currentValue) => ({
+            ...currentValue,
+            orders: session.orders.filter((o) => o !== order),
+        }));
 
     const closeSession = async () => {
         await closeSessionInDb(session);
@@ -43,5 +61,5 @@ export const useCurrentSession = () => {
         setSession(newSession);
     };
 
-    return { session, addDrink, closeSession };
+    return { session, addDrink, removeOrder, closeSession };
 };
